@@ -1,0 +1,49 @@
+[package]
+authors = ["Zibtsev Vladimir <zibtsev.vladimir@gmail.com>"]
+edition = "2021"
+readme = "README.md"
+name = "adc-less"
+version = "0.1.0"
+
+[workspace]
+
+[dependencies.rtic]
+version = "2.0.0"
+features = ["thumbv7-backend"]
+
+[dependencies.rtic-monotonics]
+version = "2.0.0"
+features = ["cortex-m-systick"]
+
+[dependencies.cortex-m]
+version = "0.7.7"
+features = ["critical-section-single-core"]
+
+[dependencies]
+embedded-hal = "0.2.7"
+libm = "0.2.15"
+panic-rtt-target = { version = "0.1.3" }
+rtt-target = { version = "0.5.0" }
+
+# https://docs.rs/stm32f7xx-hal/latest/stm32f7xx_hal/
+[dependencies.stm32f7xx-hal]
+features = ["stm32f765", "rt"]
+version = "0.8.0"
+
+# this lets you use `cargo fix`!
+[[bin]]
+name = "adc-less"
+test = false
+bench = false
+
+[profile.dev]
+opt-level = 1
+codegen-units = 16
+debug = true
+lto = false
+
+[profile.release]
+opt-level = "s"   # optimize for size
+codegen-units = 1 # better optimizations
+debug = true      # symbols are nice and they don't increase the size on Flash
+lto = true        # better optimizations
